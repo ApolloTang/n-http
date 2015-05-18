@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>host</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <p>this is host (http://localhost:5000)</p>
+        <button id="btn1">postMessage to guest</button><br>
+        <iframe id="guest" src="http://localhost:5001"></iframe>
+        <script>
+            var guest = document.getElementById('guest').contentWindow;
+            var btn = document.getElementById('btn1');
+            if (window.addEventListener) {
+
+                btn.addEventListener('click',function(){
+                    guest.postMessage('from host', 'http://localhost:5001')
+                }, false);
+
+                window.addEventListener('message',function(e) {
+                    if(e.origin !== 'http://localhost:5001') return;
+                    console.log('host received guest message:  ' + e.data);
+                }, false);
+
+            }
+        </script>
+    </body>
+</html>
